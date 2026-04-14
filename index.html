@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Masuk - Super Apps</title>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <div class="app-container login-container">
+        <!-- Header -->
+        <header class="login-header">
+            <button class="back-btn" id="backBtn">
+                <i class="ph ph-arrow-left"></i>
+            </button>
+            <h2>Masuk ke Sistem</h2>
+            <a href="#" class="text-green header-daftar">Daftar</a>
+        </header>
+
+        <!-- Main Content -->
+        <main class="login-main">
+            <div class="input-wrapper">
+                <input type="text" id="loginInput" class="login-input" placeholder="Nomor HP atau Email">
+                <p class="input-hint">Contoh: 08123456789</p>
+            </div>
+            
+            <div class="help-link-wrapper">
+                <a href="#" class="text-green fw-bold">Butuh bantuan?</a>
+            </div>
+
+            <button class="btn-selanjutnya" id="nextBtn" disabled>
+                Selanjutnya
+            </button>
+
+            <div class="divider">
+                <span>atau masuk dengan</span>
+            </div>
+
+            <div class="social-login-wrapper">
+                <button class="btn-social">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
+                    <span>Google</span>
+                </button>
+                <button class="btn-social">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+                    <span>Masuk dengan WhatsApp</span>
+                </button>
+            </div>
+            
+            <div class="login-footer">
+                <p>Belum punya akun? <a href="#" class="text-green">Daftar</a></p>
+            </div>
+        </main>
+    </div>
+
+    <!-- JS Module -->
+    <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

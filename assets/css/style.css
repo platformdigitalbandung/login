@@ -1,0 +1,240 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --t-green: #03ac0e; /* Tokopedia-like green */
+  --btn-disabled-bg: #e2e8f0;
+  --btn-disabled-color: #94a3b8;
+  --border-color: #cbd5e1;
+  --title-color: #1f2937;
+  --app-max-width: 480px; 
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #e0e5ec;
+  color: #334155;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Outfit', sans-serif;
+  color: var(--title-color);
+  font-weight: 700;
+}
+
+/* App Container (The "Phone" box on Desktop) */
+.app-container {
+  width: 100%;
+  max-width: var(--app-max-width);
+  min-height: 100vh;
+  background-color: #ffffff;
+  position: relative;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 481px) {
+  .app-container {
+    height: 100vh;
+    overflow-y: auto;
+  }
+}
+
+/* Scrollbar styling for App container */
+.app-container::-webkit-scrollbar {
+  width: 6px;
+  background: transparent;
+}
+.app-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+/* Override app container specifically for login background */
+.login-container {
+  background-color: #ffffff; /* Putih bersih */
+}
+
+/* Header */
+.login-header {
+  display: grid;
+  grid-template-columns: 40px 1fr 60px;
+  align-items: center;
+  padding: 1.2rem 1.25rem;
+  background: #fff;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--title-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.login-header h2 {
+  font-size: 1.15rem;
+  margin: 0;
+  text-align: left;
+  padding-left: 0.5rem;
+}
+
+.header-daftar {
+  text-align: right;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.text-green { color: var(--t-green); }
+.fw-bold { font-weight: 700; }
+
+/* Main Content Area */
+.login-main {
+  flex: 1;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input Area */
+.input-wrapper { margin-bottom: 0.25rem; }
+
+.login-input {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.login-input:focus {
+  border-color: var(--t-green);
+  box-shadow: 0 0 0 1px var(--t-green);
+}
+
+.login-input::placeholder { color: #94a3b8; }
+
+.input-hint {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.4rem;
+  padding-left: 0.25rem;
+}
+
+/* Help Link */
+.help-link-wrapper {
+  text-align: right;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+.help-link-wrapper a { font-size: 0.9rem; }
+
+/* Buttons */
+.btn-selanjutnya {
+  width: 100%;
+  padding: 0.85rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  font-family: inherit;
+}
+
+.btn-selanjutnya:disabled {
+  background-color: var(--btn-disabled-bg);
+  color: var(--btn-disabled-color);
+  cursor: not-allowed;
+}
+
+.btn-selanjutnya:not(:disabled) {
+  background-color: var(--t-green);
+  color: #fff;
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 2rem 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.divider span {
+  padding: 0 1rem;
+  background: #fff;
+}
+
+/* Social Buttons */
+.social-login-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.85rem;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: inherit;
+}
+
+.btn-social:hover { background: #f8fafc; }
+
+.btn-social img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+/* Footer */
+.login-footer {
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #334155;
+  padding-bottom: 2rem;
+}
