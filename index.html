@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Masuk - Super Apps</title>
-    
+
     <!-- Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
@@ -21,42 +21,52 @@
                 <i class="ph ph-arrow-left"></i>
             </button>
             <h2>Masuk ke Sistem</h2>
-            <a href="#" class="text-green header-daftar">Daftar</a>
+            <span></span>
         </header>
 
         <!-- Main Content -->
         <main class="login-main">
-            <div class="input-wrapper">
-                <input type="text" id="loginInput" class="login-input" placeholder="Nomor HP atau Email">
-                <p class="input-hint">Contoh: 08123456789</p>
-            </div>
-            
-            <div class="help-link-wrapper">
-                <a href="#" class="text-green fw-bold">Butuh bantuan?</a>
-            </div>
 
-            <button class="btn-selanjutnya" id="nextBtn" disabled>
-                Selanjutnya
-            </button>
+            <!-- Satu-satunya jalur otorisasi: WhatsAuth. Tidak ada input nomor/email
+                 manual maupun login sosial lain — lihat pdb/README.md bagian Frontend. -->
+            <section id="panelWhatsAuth">
+                <p class="lead-text">Masuk hanya dengan WhatsApp. Scan QR di bawah lewat kamera HP, atau pencet tautannya langsung kalau kamu buka halaman ini dari HP.</p>
 
-            <div class="divider">
-                <span>atau masuk dengan</span>
-            </div>
+                <div class="qr-wrapper">
+                    <img id="qrImage" class="qr-image" alt="QR WhatsAuth" src="">
+                </div>
 
-            <div class="social-login-wrapper">
-                <button class="btn-social">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
-                    <span>Google</span>
-                </button>
-                <button class="btn-social">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-                    <span>Masuk dengan WhatsApp</span>
-                </button>
-            </div>
-            
-            <div class="login-footer">
-                <p>Belum punya akun? <a href="#" class="text-green">Daftar</a></p>
-            </div>
+                <a id="waLinkAnchor" class="wa-link-btn" href="#" target="_blank" rel="noopener">
+                    <i class="ph ph-whatsapp-logo"></i>
+                    <span>Buka WhatsApp untuk masuk</span>
+                </a>
+
+                <p id="statusText" class="status-text">Menyiapkan sesi WhatsAuth...</p>
+            </section>
+
+            <!-- Muncul HANYA setelah nomor WA terverifikasi DAN akun ini belum pernah
+                 menyelesaikan pendaftaran (webhook belum pernah diisi). -->
+            <section id="panelSignup" hidden>
+                <p class="lead-text">Nomor WhatsApp kamu sudah terverifikasi. Akun ini baru pertama kali masuk — lengkapi data di bawah untuk menyelesaikan pendaftaran (opsional, boleh dilewati).</p>
+
+                <div class="input-wrapper">
+                    <input type="url" id="webhookUrl" class="login-input" placeholder="URL Webhook (opsional)">
+                    <p class="input-hint">Cuma diisi kalau kamu mengintegrasikan sistem lain ke akun ini.</p>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="webhookSecret" class="login-input" placeholder="Secret Webhook (opsional)">
+                </div>
+
+                <button class="btn-selanjutnya btn-primary" id="submitSignupBtn">Selesaikan Pendaftaran</button>
+                <button class="btn-selanjutnya btn-secondary" id="skipSignupBtn">Lewati untuk sekarang</button>
+            </section>
+
+            <!-- Berhasil masuk (baik akun lama maupun baru yang baru selesai daftar). -->
+            <section id="panelSukses" hidden>
+                <div class="sukses-icon"><i class="ph ph-check-circle"></i></div>
+                <p class="lead-text">Berhasil masuk sebagai <strong id="nomorMasuk"></strong>.</p>
+                <button class="btn-selanjutnya btn-secondary" id="logoutBtn">Keluar</button>
+            </section>
         </main>
     </div>
 
