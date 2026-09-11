@@ -5,9 +5,9 @@ Satu-satunya halaman login Platform Digital Bandung (`https://platform.digitalbd
 ## Alur (konvensi [wa.my.id/docs](https://wa.my.id/docs/))
 
 1. Halaman yang butuh login menyimpan alamatnya di cookie `login_redirect`, lalu redirect ke `/login/`.
-2. `whatsauth/js` (`qrController`) menampilkan QR di desktop atau tombol magic link di HP (`#whatsauthqr`, hitung mundur di `#whatsauthcounter`), dan membuka websocket ke backend dengan uuid yang sama dengan isi QR.
+2. `qrController` dari `auth.js` crootjs (`crootjs/lib`) menampilkan QR di desktop atau tombol magic link di HP (`#whatsauthqr`, hitung mundur di `#whatsauthcounter`), dan membuka websocket ke backend dengan uuid yang sama dengan isi QR.
 3. Pengguna mengirim pesan itu ke bot WhatsApp. Bot memverifikasi nomor pengirim dan mengirim token PASETO (umur 18 jam) lewat websocket.
-4. `whatsauth/js` menyimpan token di cookie `login` (`path=/`), lalu redirect ke alamat dari `login_redirect` (hanya path di situs ini; selain itu ke `/`).
+4. `auth.js` menyimpan token di cookie `login` (`path=/`), lalu redirect ke alamat dari `login_redirect` (hanya path di situs ini; selain itu ke `/`).
 
 Membuka `/login/` selalu menghapus cookie `login` lebih dulu (sama seperti konvensi wa.my.id).
 

@@ -1,9 +1,9 @@
-// Konvensi wa.my.id/docs: whatsauth/js merender QR (desktop) atau magic link (HP),
-// menunggu token lewat websocket, menyimpannya di cookie `login` (path=/), lalu
-// redirect ke wauthparam.redirect.
-import { qrController } from 'https://cdn.jsdelivr.net/gh/whatsauth/js@0.2.1/whatsauth.js';
-import { wauthparam } from 'https://cdn.jsdelivr.net/gh/whatsauth/js@0.2.1/config.js';
-import { getCookie, deleteCookie } from 'https://cdn.jsdelivr.net/gh/jscroot/lib@0.2.8/cookie.min.js';
+// Konvensi wa.my.id/docs lewat auth.js crootjs: qrController merender QR (desktop)
+// atau magic link (HP), menunggu token lewat websocket, menyimpannya di cookie
+// `login` (path=/), lalu redirect ke wauthparam.redirect.
+import { qrController, deleteCookie } from 'https://cdn.jsdelivr.net/gh/crootjs/lib@0.0.10/auth.min.js';
+import { wauthparam } from 'https://cdn.jsdelivr.net/gh/crootjs/lib@0.0.10/config.min.js';
+import { getCookie } from 'https://cdn.jsdelivr.net/gh/crootjs/lib@0.0.10/cookie.min.js';
 
 // Hanya path di situs ini — tolak "//host" dan "/\host" yang dibaca browser
 // sebagai alamat domain lain (open redirect).
