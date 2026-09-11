@@ -1,40 +1,24 @@
 # login
 
-Halaman masuk (login) untuk platform. Situs statis, tanpa proses build.
+Satu-satunya halaman login Platform Digital Bandung (`https://platform.digitalbdg.ac.id/login/`). Situs statis, tanpa proses build. Repo frontend lain **tidak boleh** punya form login sendiri — cukup redirect ke `/login/` (lihat `pdb/README.md` bagian Frontend).
 
-## Alur otorisasi
+## Alur (konvensi [wa.my.id/docs](https://wa.my.id/docs/))
 
-Satu-satunya jalur otorisasi adalah **WhatsAuth** — tidak ada input nomor/email
-manual maupun tombol login sosial (Google, dsb). Aturan ini didefinisikan di
-`pdb/README.md` bagian Frontend ("Otorisasi di web wajib WhatsAuth").
+1. Halaman yang butuh login menyimpan alamatnya di cookie `login_redirect`, lalu redirect ke `/login/`.
+2. `whatsauth/js` (`qrController`) menampilkan QR di desktop atau tombol magic link di HP (`#whatsauthqr`, hitung mundur di `#whatsauthcounter`), dan membuka websocket ke backend dengan uuid yang sama dengan isi QR.
+3. Pengguna mengirim pesan itu ke bot WhatsApp. Bot memverifikasi nomor pengirim dan mengirim token PASETO (umur 18 jam) lewat websocket.
+4. `whatsauth/js` menyimpan token di cookie `login` (`path=/`), lalu redirect ke alamat dari `login_redirect` (hanya path di situs ini; selain itu ke `/`).
 
-1. Halaman membuka koneksi WebSocket ke backend dan menghasilkan UUID acak,
-   lalu menampilkannya sebagai QR code sekaligus tautan `wa.me` yang bisa
-   dipencet langsung dari HP.
-2. Pengguna memindai QR (atau memencet tautannya) untuk mengirim pesan ke bot
-   WhatsApp platform. Bot memverifikasi kepemilikan nomor tersebut dan
-   mengirim token lewat WebSocket yang sama.
-3. Setelah token diterima, halaman memanggil `POST /api/signup`:
-   - Jika akun **sudah** pernah menyelesaikan pendaftaran → langsung masuk.
-   - Jika **belum** → baru saat itu form pendaftaran ditampilkan (nomor WA
-     sudah terverifikasi lebih dulu, jadi tidak ada jalur signup yang bisa
-     diakses tanpa bukti kepemilikan WA — ini yang mencegah spam pendaftaran).
+Membuka `/login/` selalu menghapus cookie `login` lebih dulu (sama seperti konvensi wa.my.id).
+
+## Konfigurasi (`assets/js/main.js`)
+
+- `wauthparam.auth_ws` — Base64 dari `wss://apk.fly.dev/ws/whatsauth/public`. Rute websocket ada di **akar** backend, bukan di bawah `/api`.
+- `wauthparam.keyword` — Base64 dari `https://wa.me/<nomor bot>?text=<waqrkeyword>`. Kata kunci **harus sama persis** dengan `user.waqrkeyword` bot itu di database.
+- `wauthparam.tokencookiehourslifetime` — 18, sama dengan umur token dari backend.
 
 ## Struktur
 
-- `index.html` — markup halaman, tiga panel: WhatsAuth (QR + link), form
-  pelengkap pendaftaran, dan status berhasil masuk.
-- `assets/js/config.js` — alamat backend API tetap (bukan tunnel, tidak bisa
-  diganti dari sisi pengguna — lihat catatan keamanan di file tersebut).
-- `assets/js/api.js` — logika WhatsAuth (WebSocket) dan pemanggilan
-  `POST /api/signup` lewat [crootjs](https://croot.js.org) (`postJSON`).
-- `assets/js/main.js` — pengikat DOM, memakai helper elemen crootjs
-  (`onClick`, `setInner`, `show`/`hide`) — bukan manipulasi DOM mentah.
-- `assets/css/style.css` — gaya panel WhatsAuth dan form pelengkap.
-
-## Konvensi
-
-Sesuai `pdb/README.md`: semua pemanggilan REST ke backend wajib lewat
-[crootjs](https://croot.js.org) via CDN, tidak memakai `fetch()` langsung.
-Pengecualian satu-satunya adalah `WebSocket` untuk WhatsAuth, karena crootjs
-tidak menyediakan helper untuk itu.
+- `index.html` — elemen `#whatsauthqr` dan `#whatsauthcounter`.
+- `assets/js/main.js` — konfigurasi `wauthparam` + `qrController`.
+- `assets/css/style.css` — tampilan halaman.
