@@ -14,7 +14,8 @@ function alamatKembali() {
 
 // Websocket WhatsAuth ada di rute akar backend, BUKAN di bawah /api.
 wauthparam.auth_ws = btoa('wss://apk.fly.dev/ws/whatsauth/public');
-// Nomor bot + kata kunci HARUS sama persis dengan `user.waqrkeyword` bot itu di database.
+// Nomor bot + kata kunci HARUS sama persis dengan `bot.waqrkeyword` bot itu di database
+// (koleksi `bot`, nama lamanya `user`).
 wauthparam.keyword = btoa('https://wa.me/6282258512828?text=wh4t5@uth0');
 // Sama dengan umur token yang diterbitkan backend.
 wauthparam.tokencookiehourslifetime = 18;

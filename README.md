@@ -14,7 +14,7 @@ Membuka `/login/` selalu menghapus cookie `login` lebih dulu (sama seperti konve
 ## Konfigurasi (`assets/js/main.js`)
 
 - `wauthparam.auth_ws` — Base64 dari `wss://apk.fly.dev/ws/whatsauth/public`. Rute websocket ada di **akar** backend, bukan di bawah `/api`.
-- `wauthparam.keyword` — Base64 dari `https://wa.me/<nomor bot>?text=<waqrkeyword>`. Kata kunci **harus sama persis** dengan `user.waqrkeyword` bot itu di database.
+- `wauthparam.keyword` — Base64 dari `https://wa.me/<nomor bot>?text=<waqrkeyword>`. Kata kunci **harus sama persis** dengan `bot.waqrkeyword` bot itu di database (koleksi `bot`, nama lamanya `user`).
 - `wauthparam.tokencookiehourslifetime` — 18, sama dengan umur token dari backend.
 
 ## Struktur
