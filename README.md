@@ -9,6 +9,13 @@ Satu-satunya halaman login Platform Digital Bandung (`https://platform.digitalbd
 3. Pengguna mengirim pesan itu ke bot WhatsApp. Bot memverifikasi nomor pengirim dan mengirim token PASETO (umur 18 jam) lewat websocket.
 4. `auth.js` menyimpan token di cookie `login` (`path=/`), lalu redirect ke alamat dari `login_redirect` (hanya path di situs ini; selain itu ke `/`).
 
+**Versi crootjs dipatok `0.0.12`** (naik dari `0.0.10` pada 2026-09-14). Kenaikan ini memperbaiki dua hal yang kami laporkan dari keluhan nyata *"countdown masih 15 detik tapi balasannya sesi QR sudah habis"* — lihat [`docs/produk/laporan-bug-crootjs-auth.md`](https://github.com/platformdigitalbandung/docs/blob/main/produk/laporan-bug-crootjs-auth.md):
+
+* **Masa tenggang rotasi** (`wauthparam.graceperiod`, bawaan 15 detik). QR berganti tiap 30 detik; sebelumnya soket uuid lama ditutup pada detik yang sama, sehingga pemindaian yang dikirim beberapa detik terlambat **pasti** gagal. Sekarang soket lama dibiarkan hidup selama masa tenggang, jadi pesan yang telat sedikit tetap masuk.
+* **Koneksi putus kini terlihat di layar.** Dulu `onclose` hanya menulis ke console, jadi QR tetap tampil dan hitung mundur tetap jalan walau soketnya sudah mati — termasuk sesudah backend di-deploy ulang. Sekarang QR diganti tombol muat ulang, dan `wauthparam.onconnectionlost` tersedia kalau halaman mau ikut bereaksi.
+
+Jangan pakai `@latest`: versi dipatok supaya perubahan di crootjs tidak diam-diam mengubah alur login (aturan Frontend di `pdb/README.md`).
+
 Membuka `/login/` selalu menghapus cookie `login` lebih dulu (sama seperti konvensi wa.my.id).
 
 ## Konfigurasi (`assets/js/main.js`)
