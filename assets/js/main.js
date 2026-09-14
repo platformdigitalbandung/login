@@ -12,6 +12,24 @@ function alamatKembali() {
   return /^\/(?![/\\])/.test(asal) ? asal : '/';
 }
 
+// Petunjuk mengikuti apa yang dirender crootjs: QR untuk desktop, tombol untuk HP.
+document.body.classList.add(wauthparam.mobile ? 'mode-hp' : 'mode-qr');
+
+// Tombol "Buka WhatsApp" meneruskan ketukan ke tombol magic link yang dirender
+// crootjs, supaya ada target sentuh berlabel selain ikonnya.
+document.getElementById('buka-wa').addEventListener('click', () => {
+  const ikon = document.querySelector('#whatsauthqr svg');
+  if (ikon) ikon.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+});
+
+// Kalimat "diperbarui dalam … detik" hanya cocok selama penghitung berisi angka;
+// pesan lain dari crootjs (mis. koneksi putus) ditampilkan tanpa kalimat itu.
+const penghitung = document.getElementById('whatsauthcounter');
+const statusHitung = document.getElementById('status-hitung');
+new MutationObserver(() => {
+  statusHitung.classList.toggle('angka', /^\d+$/.test(penghitung.textContent.trim()));
+}).observe(penghitung, { childList: true, characterData: true, subtree: true });
+
 // Websocket WhatsAuth ada di rute akar backend, BUKAN di bawah /api.
 wauthparam.auth_ws = btoa('wss://apk.fly.dev/ws/whatsauth/public');
 // Nomor bot + kata kunci HARUS sama persis dengan `bot.waqrkeyword` bot itu di database

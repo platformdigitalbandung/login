@@ -20,14 +20,14 @@
 body {
   margin: 0; background: var(--latar); color: var(--tinta);
   font-family: var(--teks); font-size: 14px; line-height: 1.55;
-  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-  padding: 2.5rem 1rem;
+  min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 2rem 1rem;
   -webkit-tap-highlight-color: transparent;
 }
 a { color: var(--aksen); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-.masuk { width: 100%; max-width: 420px; }
+.masuk { width: 100%; max-width: 440px; }
 
 .masuk-merek { display: flex; align-items: center; gap: .65rem; margin: 0 0 1rem; color: var(--tinta); }
 .masuk-merek:hover { text-decoration: none; }
@@ -43,7 +43,15 @@ a:hover { text-decoration: underline; }
 }
 .masuk-isi { padding: 1rem 1.1rem 1.2rem; }
 
-.lead-text { margin: 0 0 1rem; color: var(--redup); font-size: .9rem; }
+/* Petunjuk sesuai perangkat: main.js memberi body kelas mode-qr atau mode-hp
+   mengikuti wauthparam.mobile crootjs (QR di desktop, tombol di HP). */
+.hanya-qr, .hanya-hp { display: none; }
+body.mode-qr .hanya-qr, body.mode-hp .hanya-hp { display: revert; }
+
+.langkah { margin: 0 0 1rem; padding-left: 1.3rem; color: var(--tinta); font-size: .9rem; }
+.langkah li { margin: 0 0 .35rem; padding-left: .15rem; }
+.langkah li::marker { color: var(--aksen); font-weight: 600; }
+.langkah b { font-weight: 600; }
 
 .qr-wrapper {
   display: flex; justify-content: center; align-items: center;
@@ -51,6 +59,16 @@ a:hover { text-decoration: underline; }
   background: #fafbfc; border: 1px solid var(--garis-halus); border-radius: 4px;
 }
 .qr-wrapper > svg { width: 220px; height: 220px; max-width: 100%; }
+/* Tombol magic link crootjs (HP): ikon WhatsApp dibuat seukuran tombol, bukan ilustrasi. */
+body.mode-hp .qr-wrapper { min-height: 0; padding: 1rem; }
+body.mode-hp .qr-wrapper > svg { width: 96px; height: 96px; cursor: pointer; }
+.tombol-wa-baris { margin: 0 0 .9rem; }
+.tombol-wa {
+  display: block; width: 100%; min-height: 44px; padding: .6rem 1rem;
+  border: 1px solid var(--aksen); border-radius: 4px; background: var(--aksen);
+  color: #fff; font: inherit; font-weight: 600; cursor: pointer;
+}
+.tombol-wa:active { filter: brightness(.92); }
 .qr-wrapper a, .qr-wrapper button {
   display: inline-block; padding: .55rem 1rem; border: 1px solid var(--aksen); border-radius: 4px;
   background: var(--aksen); color: #fff; font: inherit; font-weight: 500; text-decoration: none;
@@ -58,6 +76,10 @@ a:hover { text-decoration: underline; }
 
 .status-text { margin: 0 0 .25rem; text-align: center; font-size: .82rem; color: var(--redup); }
 #whatsauthcounter { font-family: var(--mono); color: var(--tinta); }
+/* Satuan "detik" hanya saat penghitung berisi angka; pesan crootjs (koneksi putus) tampil apa adanya. */
+.status-text .satuan { display: none; }
+.status-text.angka .satuan { display: inline; }
+.status-text:not(.angka) .hanya-qr, .status-text:not(.angka) .hanya-hp { display: none; }
 
 .masuk-kaki {
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: .4rem 1rem;

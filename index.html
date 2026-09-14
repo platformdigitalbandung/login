@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masuk — Platform Digital Bandung</title>
     <meta name="robots" content="noindex">
+    <link rel="icon" href="/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -18,18 +19,27 @@
         </a>
 
         <!-- Satu-satunya form login platform (pdb/README.md bagian Frontend).
-             QR (desktop) atau tombol magic link (HP) dirender auth.js crootjs ke #whatsauthqr. -->
+             QR (desktop) atau tombol magic link (HP) dirender auth.js crootjs ke #whatsauthqr.
+             Petunjuk .hanya-qr / .hanya-hp dipilih main.js dari wauthparam.mobile. -->
         <section class="masuk-panel">
-            <h1>Masuk ke Platform</h1>
+            <h1>Masuk dengan WhatsApp</h1>
             <div class="masuk-isi">
-                <p class="lead-text">Pindai QR di bawah dengan kamera WhatsApp, atau ketuk tombolnya kalau halaman ini dibuka dari HP. Nomor WhatsApp Anda yang menjadi identitas masuk.</p>
-                <div class="qr-wrapper" id="whatsauthqr"></div>
-                <p class="status-text">QR berganti otomatis. Hitung mundur:</p>
-                <p class="status-text" id="whatsauthcounter"></p>
+                <ol class="langkah">
+                    <li class="hanya-qr">Buka <b>kamera di aplikasi WhatsApp</b>, lalu arahkan ke kode di bawah.</li>
+                    <li class="hanya-hp">Ketuk tombol <b>Buka WhatsApp</b> di bawah.</li>
+                    <li>WhatsApp terbuka dengan pesan yang sudah terisi — tekan <b>Kirim</b>, jangan ubah isinya.</li>
+                    <li>Tunggu sebentar di halaman ini. Anda otomatis masuk begitu pesan terkirim.</li>
+                </ol>
+                <div class="qr-wrapper" id="whatsauthqr" aria-live="polite"></div>
+                <p class="hanya-hp tombol-wa-baris"><button type="button" class="tombol-wa" id="buka-wa">Buka WhatsApp</button></p>
+                <p class="status-text" id="status-hitung">
+                    <span class="hanya-qr">Kode diperbarui dalam</span><span class="hanya-hp">Tombol diperbarui dalam</span>
+                    <span id="whatsauthcounter"></span><span class="satuan"> detik</span>
+                </p>
             </div>
         </section>
 
-        <p class="masuk-kaki"><span>Tidak ada pendaftaran mandiri — nomor didaftarkan pengelola prodi.</span><a href="/">Kembali ke beranda</a></p>
+        <p class="masuk-kaki"><span>Belum bisa masuk? Nomor WhatsApp Anda harus lebih dulu didaftarkan pengelola program studi — tidak ada pendaftaran mandiri.</span><a href="/">Kembali ke beranda</a></p>
     </main>
 
     <script type="module" src="assets/js/main.js"></script>
