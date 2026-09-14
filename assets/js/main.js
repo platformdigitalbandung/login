@@ -22,6 +22,18 @@ document.getElementById('buka-wa').addEventListener('click', () => {
   if (ikon) ikon.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 });
 
+// Tombol magic link crootjs berupa SVG bertulisan "Login": disembunyikan dari
+// pembaca layar karena tombol "Buka WhatsApp" sudah jadi kontrol yang dapat diakses.
+const wadahQR = document.getElementById('whatsauthqr');
+new MutationObserver(() => {
+  if (!wauthparam.mobile) return;
+  const ikon = wadahQR.querySelector('svg');
+  if (ikon && ikon.getAttribute('aria-hidden') !== 'true') {
+    ikon.setAttribute('aria-hidden', 'true');
+    ikon.setAttribute('focusable', 'false');
+  }
+}).observe(wadahQR, { childList: true });
+
 // Kalimat "diperbarui dalam … detik" hanya cocok selama penghitung berisi angka;
 // pesan lain dari crootjs (mis. koneksi putus) ditampilkan tanpa kalimat itu.
 const penghitung = document.getElementById('whatsauthcounter');
