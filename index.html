@@ -3,24 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk - Platform Digital Bandung</title>
+    <title>Masuk — Platform Digital Bandung</title>
+    <meta name="robots" content="noindex">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <div class="app-container">
-        <header class="login-header">
-            <h2>Masuk ke Platform</h2>
-        </header>
+    <main class="masuk">
+        <a class="masuk-merek" href="/">
+            <img src="assets/img/logo.png" alt="Logo Akademi Digital Bandung" width="44" height="44">
+            <span><b>Platform Digital Bandung</b><small>Akademi Digital Bandung</small></span>
+        </a>
 
         <!-- Satu-satunya form login platform (pdb/README.md bagian Frontend).
              QR (desktop) atau tombol magic link (HP) dirender auth.js crootjs ke #whatsauthqr. -->
-        <main class="login-main">
-            <p class="lead-text">Scan QR di bawah dengan kamera WhatsApp, atau tap tombolnya kalau membuka halaman ini dari HP. Nomor WhatsApp kamu yang menjadi identitas masuk.</p>
-            <div class="qr-wrapper" id="whatsauthqr"></div>
-            <p class="status-text">QR berganti otomatis. Hitung mundur:</p>
-            <p class="status-text" id="whatsauthcounter"></p>
-        </main>
-    </div>
+        <section class="masuk-panel">
+            <h1>Masuk ke Platform</h1>
+            <div class="masuk-isi">
+                <p class="lead-text">Pindai QR di bawah dengan kamera WhatsApp, atau ketuk tombolnya kalau halaman ini dibuka dari HP. Nomor WhatsApp Anda yang menjadi identitas masuk.</p>
+                <div class="qr-wrapper" id="whatsauthqr"></div>
+                <p class="status-text">QR berganti otomatis. Hitung mundur:</p>
+                <p class="status-text" id="whatsauthcounter"></p>
+            </div>
+        </section>
+
+        <p class="masuk-kaki"><span>Tidak ada pendaftaran mandiri — nomor didaftarkan pengelola prodi.</span><a href="/">Kembali ke beranda</a></p>
+    </main>
 
     <script type="module" src="assets/js/main.js"></script>
 </body>

@@ -1,87 +1,65 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+/* Halaman masuk Platform Digital Bandung — tema yang sama dengan LMS
+   (platformdigitalbandung.github.io/assets/css/style.css): latar abu netral,
+   panel putih bergaris tipis, satu warna aksen, huruf IBM Plex Sans. */
 
 :root {
-  --border-color: #cbd5e1;
-  --title-color: #1f2937;
-  --app-max-width: 480px;
+  --latar: #f4f5f7;
+  --permukaan: #ffffff;
+  --garis: #dde1e6;
+  --garis-halus: #eceef1;
+  --tinta: #1d232b;
+  --redup: #5d6673;
+  --aksen: #1b5e9e;
+  --teks: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  -webkit-tap-highlight-color: transparent;
-}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: #e0e5ec;
-  color: #334155;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  margin: 0; background: var(--latar); color: var(--tinta);
+  font-family: var(--teks); font-size: 14px; line-height: 1.55;
+  min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+  padding: 2.5rem 1rem;
+  -webkit-tap-highlight-color: transparent;
 }
+a { color: var(--aksen); text-decoration: none; }
+a:hover { text-decoration: underline; }
 
-h2 {
-  font-family: 'Outfit', sans-serif;
-  color: var(--title-color);
-  font-weight: 700;
-}
+.masuk { width: 100%; max-width: 420px; }
 
-.app-container {
-  width: 100%;
-  max-width: var(--app-max-width);
-  min-height: 100vh;
-  background-color: #fff;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-}
+.masuk-merek { display: flex; align-items: center; gap: .65rem; margin: 0 0 1rem; color: var(--tinta); }
+.masuk-merek:hover { text-decoration: none; }
+.masuk-merek img { width: 44px; height: 44px; object-fit: contain; flex: none; }
+.masuk-merek span { display: flex; flex-direction: column; line-height: 1.2; }
+.masuk-merek b { font-size: 1rem; font-weight: 600; }
+.masuk-merek small { font-size: .75rem; color: var(--redup); }
 
-.login-header {
-  padding: 1.2rem 1.25rem;
+.masuk-panel { background: var(--permukaan); border: 1px solid var(--garis); border-radius: 6px; }
+.masuk-panel h1 {
+  margin: 0; padding: .8rem 1.1rem; font-size: 1rem; font-weight: 600;
+  border-bottom: 1px solid var(--garis-halus);
 }
+.masuk-isi { padding: 1rem 1.1rem 1.2rem; }
 
-.login-header h2 {
-  font-size: 1.15rem;
-}
-
-.login-main {
-  flex: 1;
-  padding: 1rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.lead-text {
-  font-size: 0.95rem;
-  color: #475569;
-  margin-bottom: 1.5rem;
-  line-height: 1.5;
-}
+.lead-text { margin: 0 0 1rem; color: var(--redup); font-size: .9rem; }
 
 .qr-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 240px;
-  padding: 1.5rem;
-  margin-bottom: 1.25rem;
-  background: #f8fafc;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
+  display: flex; justify-content: center; align-items: center;
+  min-height: 240px; padding: 1.25rem; margin: 0 0 .9rem;
+  background: #fafbfc; border: 1px solid var(--garis-halus); border-radius: 4px;
+}
+.qr-wrapper > svg { width: 220px; height: 220px; max-width: 100%; }
+.qr-wrapper a, .qr-wrapper button {
+  display: inline-block; padding: .55rem 1rem; border: 1px solid var(--aksen); border-radius: 4px;
+  background: var(--aksen); color: #fff; font: inherit; font-weight: 500; text-decoration: none;
 }
 
-.qr-wrapper > svg {
-  width: 240px;
-  height: 240px;
-  max-width: 100%;
-}
+.status-text { margin: 0 0 .25rem; text-align: center; font-size: .82rem; color: var(--redup); }
+#whatsauthcounter { font-family: var(--mono); color: var(--tinta); }
 
-.status-text {
-  text-align: center;
-  font-size: 0.85rem;
-  color: #64748b;
-  margin-bottom: 0.5rem;
+.masuk-kaki {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: .4rem 1rem;
+  margin: .9rem 0 0; font-size: .8rem; color: var(--redup);
 }
