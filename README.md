@@ -1,31 +1,33 @@
 # login
 
-Satu-satunya halaman login Platform Digital Bandung (`https://platform.digitalbdg.ac.id/login/`). Situs statis, tanpa proses build. Repo frontend lain **tidak boleh** punya form login sendiri — cukup redirect ke `/login/` (lihat `pdb/README.md` bagian Frontend).
+Halaman login WhatsAuth Platform Digital Bandung (`https://platform.digitalbdg.ac.id/login/`). Situs statis, tanpa proses build. Kebijakan login (satu-satunya form login, cookie `login` dan `login_redirect`, alamat backend, kata kunci) ada di `pdb/README.md` bagian Frontend; README ini hanya detail teknis repo ini.
 
-## Alur (konvensi [wa.my.id/docs](https://wa.my.id/docs/))
+## Cara kerja
 
-1. Halaman yang butuh login menyimpan alamatnya di cookie `login_redirect`, lalu redirect ke `/login/`.
-2. `qrController` dari `auth.js` crootjs (`crootjs/lib`) menampilkan QR di desktop atau tombol magic link di HP (`#whatsauthqr`, hitung mundur di `#whatsauthcounter`), dan membuka websocket ke backend dengan uuid yang sama dengan isi QR.
-3. Pengguna mengirim pesan itu ke bot WhatsApp. Bot memverifikasi nomor pengirim dan mengirim token PASETO (umur 18 jam) lewat websocket.
-4. `auth.js` menyimpan token di cookie `login` (`path=/`), lalu redirect ke alamat dari `login_redirect` (hanya path di situs ini; selain itu ke `/`).
+1. Membuka `/login/` selalu menghapus cookie `login` lebih dulu (`deleteCookie(wauthparam.tokencookiename)`).
+2. `main.js` membaca cookie `login_redirect` dan mengisinya ke `wauthparam.redirect` — hanya path di situs ini (`//host` dan `/\host` ditolak, mencegah open redirect); selain itu `/`.
+3. `qrController` dari `auth.js` crootjs merender QR (desktop) atau tombol magic link (HP) di `#whatsauthqr`, hitung mundur di `#whatsauthcounter`, dan membuka websocket ke backend dengan uuid yang sama dengan isi QR.
+4. Pengguna mengirim pesan itu ke bot WhatsApp; bot memverifikasi nomor pengirim dan mengirim token PASETO (umur 18 jam) lewat websocket. `auth.js` menyimpannya di cookie `login`, lalu redirect ke `wauthparam.redirect`.
 
-**Versi crootjs dipatok `0.0.12`** (naik dari `0.0.10` pada 2026-09-14). Kenaikan ini memperbaiki dua hal yang kami laporkan dari keluhan nyata *"countdown masih 15 detik tapi balasannya sesi QR sudah habis"* — lihat [`docs/produk/laporan-bug-crootjs-auth.md`](https://github.com/platformdigitalbandung/docs/blob/main/produk/laporan-bug-crootjs-auth.md):
+Tambahan tampilan di `main.js`: kelas `mode-qr`/`mode-hp` di `<body>` (dari `wauthparam.mobile`) memilih petunjuk `.hanya-qr`/`.hanya-hp`; tombol `#buka-wa` meneruskan ketukan ke tombol magic link crootjs (yang disembunyikan dari pembaca layar); kalimat "diperbarui dalam … detik" (`#status-hitung`) hanya tampil selama penghitung berisi angka.
 
-* **Masa tenggang rotasi** (`wauthparam.graceperiod`, bawaan 15 detik). QR berganti tiap 30 detik; sebelumnya soket uuid lama ditutup pada detik yang sama, sehingga pemindaian yang dikirim beberapa detik terlambat **pasti** gagal. Sekarang soket lama dibiarkan hidup selama masa tenggang, jadi pesan yang telat sedikit tetap masuk.
-* **Koneksi putus kini terlihat di layar.** Dulu `onclose` hanya menulis ke console, jadi QR tetap tampil dan hitung mundur tetap jalan walau soketnya sudah mati — termasuk sesudah backend di-deploy ulang. Sekarang QR diganti tombol muat ulang, dan `wauthparam.onconnectionlost` tersedia kalau halaman mau ikut bereaksi.
+## crootjs `0.0.12`
 
-Jangan pakai `@latest`: versi dipatok supaya perubahan di crootjs tidak diam-diam mengubah alur login (aturan Frontend di `pdb/README.md`).
+Dipatok `0.0.12` (naik dari `0.0.10` pada 2026-09-14) untuk dua perbaikan yang kami laporkan dari keluhan *"countdown masih 15 detik tapi balasannya sesi QR sudah habis"* — lihat [`docs/produk/laporan-bug-crootjs-auth.md`](https://github.com/platformdigitalbandung/docs/blob/main/produk/laporan-bug-crootjs-auth.md):
 
-Membuka `/login/` selalu menghapus cookie `login` lebih dulu (sama seperti konvensi wa.my.id).
+* **Masa tenggang rotasi** (`wauthparam.graceperiod`, bawaan 15 detik). QR berganti tiap 30 detik; soket uuid lama kini tetap hidup selama masa tenggang, jadi pemindaian yang telat beberapa detik tetap masuk.
+* **Koneksi putus terlihat di layar.** Dulu `onclose` hanya menulis ke console sehingga QR dan hitung mundur tetap jalan walau soket mati (mis. sesudah backend di-deploy ulang). Kini QR diganti tombol muat ulang; `wauthparam.onconnectionlost` tersedia kalau halaman mau ikut bereaksi.
 
 ## Konfigurasi (`assets/js/main.js`)
 
-- `wauthparam.auth_ws` — Base64 dari `wss://apk.fly.dev/ws/whatsauth/public`. Rute websocket ada di **akar** backend, bukan di bawah `/api`.
-- `wauthparam.keyword` — Base64 dari `https://wa.me/<nomor bot>?text=<waqrkeyword>`. Kata kunci **harus sama persis** dengan `bot.waqrkeyword` bot itu di database (koleksi `bot`, nama lamanya `user`).
+- `wauthparam.auth_ws` — Base64 dari `wss://apk.fly.dev/ws/whatsauth/public` (rute di akar backend, bukan `/api`).
+- `wauthparam.keyword` — Base64 dari `https://wa.me/<nomor bot>?text=<waqrkeyword>`.
 - `wauthparam.tokencookiehourslifetime` — 18, sama dengan umur token dari backend.
+- `wauthparam.redirect` — hasil `alamatKembali()` (langkah 2).
 
 ## Struktur
 
-- `index.html` — elemen `#whatsauthqr` dan `#whatsauthcounter`.
-- `assets/js/main.js` — konfigurasi `wauthparam` + `qrController`.
+- `index.html` — panel masuk: petunjuk, `#whatsauthqr`, `#buka-wa`, `#whatsauthcounter`.
+- `assets/js/main.js` — konfigurasi `wauthparam`, penanganan `login_redirect`, dan `qrController`.
 - `assets/css/style.css` — tampilan halaman.
+- `assets/img/logo.png` — logo.
