@@ -81,6 +81,28 @@ body.mode-hp .qr-wrapper > svg { width: 96px; height: 96px; cursor: pointer; }
 .status-text.angka .satuan { display: inline; }
 .status-text:not(.angka) .hanya-qr, .status-text:not(.angka) .hanya-hp { display: none; }
 
+/* Masuk dengan OTP: cadangan saat bot membalas "sesi tidak terhubung" beserta OTP. */
+.otp { border-top: 1px solid var(--garis-halus); padding: .9rem 1.1rem 1.1rem; }
+.tombol-otp {
+  display: block; width: 100%; min-height: 40px; padding: .5rem 1rem;
+  border: 1px solid var(--garis); border-radius: 4px; background: var(--permukaan);
+  color: var(--aksen); font: inherit; font-weight: 600; cursor: pointer;
+}
+.tombol-otp:hover { border-color: var(--aksen); }
+.form-otp { margin: .9rem 0 0; }
+.otp-petunjuk { margin: 0 0 .8rem; font-size: .85rem; color: var(--redup); }
+.form-otp label { display: block; margin: 0 0 .25rem; font-size: .85rem; font-weight: 500; }
+.form-otp input {
+  display: block; width: 100%; min-height: 40px; margin: 0 0 .75rem; padding: .45rem .65rem;
+  border: 1px solid var(--garis); border-radius: 4px; background: var(--permukaan);
+  color: var(--tinta); font: inherit; font-size: 1rem;
+}
+.form-otp input:focus { outline: 2px solid var(--aksen); outline-offset: -1px; border-color: var(--aksen); }
+#otp-kode { font-family: var(--mono); letter-spacing: .2em; }
+.otp-pesan { margin: 0 0 .75rem; font-size: .85rem; color: #b42318; }
+.otp-pesan:empty { display: none; }
+.tombol-wa:disabled { opacity: .6; cursor: wait; }
+
 .masuk-kaki {
   display: flex; justify-content: space-between; flex-wrap: wrap; gap: .4rem 1rem;
   margin: .9rem 0 0; font-size: .8rem; color: var(--redup);

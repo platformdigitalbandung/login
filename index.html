@@ -37,6 +37,21 @@
                     <span id="whatsauthcounter"></span><span class="satuan"> detik</span>
                 </p>
             </div>
+            <!-- Cadangan saat bot membalas "sesi tidak terhubung" beserta OTP: nomor + OTP
+                 ditukar jadi token lewat POST /api/whatsauth/otp (main.js). OTP hanya
+                 dikirim bot lewat WhatsApp; halaman ini tidak bisa memintanya. -->
+            <div class="otp">
+                <button type="button" class="tombol-otp" id="buka-otp" aria-expanded="false" aria-controls="form-otp">Masuk dengan OTP</button>
+                <form class="form-otp" id="form-otp" hidden novalidate>
+                    <p class="otp-petunjuk">Pakai ini hanya kalau bot WhatsApp membalas dengan <b>kode OTP</b>. Kode berlaku 5 menit dan hanya sekali pakai.</p>
+                    <label for="otp-nomor">Nomor WhatsApp</label>
+                    <input type="tel" id="otp-nomor" name="phonenumber" inputmode="tel" autocomplete="tel" placeholder="08xxxxxxxxxx" required>
+                    <label for="otp-kode">Kode OTP</label>
+                    <input type="text" id="otp-kode" name="otp" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="6 digit" required>
+                    <p class="otp-pesan" id="otp-pesan" role="alert"></p>
+                    <button type="submit" class="tombol-wa" id="otp-kirim">Masuk</button>
+                </form>
+            </div>
         </section>
 
         <p class="masuk-kaki"><span>Belum bisa masuk? Nomor WhatsApp Anda harus lebih dulu didaftarkan pengelola program studi — tidak ada pendaftaran mandiri.</span><a href="/">Kembali ke beranda</a></p>

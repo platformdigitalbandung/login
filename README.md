@@ -9,6 +9,8 @@ Halaman login WhatsAuth Platform Digital Bandung (`https://platform.digitalbdg.a
 3. `qrController` dari `auth.js` crootjs merender QR (desktop) atau tombol magic link (HP) di `#whatsauthqr`, hitung mundur di `#whatsauthcounter`, dan membuka websocket ke backend dengan uuid yang sama dengan isi QR.
 4. Pengguna mengirim pesan itu ke bot WhatsApp; bot memverifikasi nomor pengirim dan mengirim token PASETO (umur 18 jam) lewat websocket. `auth.js` menyimpannya di cookie `login`, lalu redirect ke `wauthparam.redirect`.
 
+5. **Masuk dengan OTP** (sejak 2026-09-18). Kalau pesan WhatsAuth sampai ke bot tetapi room QR halaman ini sudah putus, bot membalas dengan OTP 6 digit (berlaku 5 menit, sekali pakai, dicabut setelah 5 kode salah) beserta panduannya. Tombol `#buka-otp` membuka `#form-otp` (nomor WhatsApp + kode OTP); `main.js` mengirimnya dengan `postJSON` crootjs ke `https://apk.fly.dev/api/whatsauth/otp`, menyimpan `login` dari balasan ke cookie `login` (`setCookieWithExpireHour`, 18 jam — sama dengan jalur websocket), lalu `redirect` ke `wauthparam.redirect`. Pesan galat dari backend (`detail`) tampil di `#otp-pesan`. Halaman ini tidak bisa meminta OTP; OTP hanya dikirim bot.
+
 Tambahan tampilan di `main.js`: kelas `mode-qr`/`mode-hp` di `<body>` (dari `wauthparam.mobile`) memilih petunjuk `.hanya-qr`/`.hanya-hp`; tombol `#buka-wa` meneruskan ketukan ke tombol magic link crootjs (yang disembunyikan dari pembaca layar); kalimat "diperbarui dalam … detik" (`#status-hitung`) hanya tampil selama penghitung berisi angka.
 
 ## crootjs `0.0.12`
@@ -27,7 +29,7 @@ Dipatok `0.0.12` (naik dari `0.0.10` pada 2026-09-14) untuk dua perbaikan yang k
 
 ## Struktur
 
-- `index.html` — panel masuk: petunjuk, `#whatsauthqr`, `#buka-wa`, `#whatsauthcounter`.
-- `assets/js/main.js` — konfigurasi `wauthparam`, penanganan `login_redirect`, dan `qrController`.
+- `index.html` — panel masuk: petunjuk, `#whatsauthqr`, `#buka-wa`, `#whatsauthcounter`, dan form cadangan `#form-otp` (tombol `#buka-otp`).
+- `assets/js/main.js` — konfigurasi `wauthparam`, penanganan `login_redirect`, `qrController`, dan masuk dengan OTP.
 - `assets/css/style.css` — tampilan halaman.
 - `assets/img/logo.png` — logo.

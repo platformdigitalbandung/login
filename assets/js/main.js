@@ -3,7 +3,9 @@
 // `login` (path=/), lalu redirect ke wauthparam.redirect.
 import { qrController, deleteCookie } from 'https://cdn.jsdelivr.net/gh/crootjs/lib@0.0.12/auth.min.js';
 import { wauthparam } from 'https://cdn.jsdelivr.net/gh/crootjs/lib@0.0.12/config.min.js';
-import { getCookie } from 'https://cdn.jsdelivr.net/gh/crootjs/lib@0.0.12/cookie.min.js';
+import { getCookie, setCookieWithExpireHour } from 'https://cdn.jsdelivr.net/gh/crootjs/lib@0.0.12/cookie.min.js';
+import { postJSON } from 'https://cdn.jsdelivr.net/gh/crootjs/lib@0.0.12/api.min.js';
+import { redirect } from 'https://cdn.jsdelivr.net/gh/crootjs/lib@0.0.12/url.min.js';
 
 // Hanya path di situs ini — tolak "//host" dan "/\host" yang dibaca browser
 // sebagai alamat domain lain (open redirect).
@@ -50,6 +52,42 @@ wauthparam.keyword = btoa('https://wa.me/6282258512828?text=wh4t5@uth0');
 // Sama dengan umur token yang diterbitkan backend.
 wauthparam.tokencookiehourslifetime = 18;
 wauthparam.redirect = alamatKembali();
+
+// Masuk dengan OTP: cadangan saat bot membalas "sesi tidak terhubung" beserta
+// OTP (room QR halaman ini sudah putus). Nomor + OTP ditukar jadi token yang
+// sama dengan yang biasanya datang lewat websocket.
+const URL_OTP = 'https://apk.fly.dev/api/whatsauth/otp';
+const bukaOTP = document.getElementById('buka-otp');
+const formOTP = document.getElementById('form-otp');
+const pesanOTP = document.getElementById('otp-pesan');
+const kirimOTP = document.getElementById('otp-kirim');
+
+bukaOTP.addEventListener('click', () => {
+  formOTP.hidden = !formOTP.hidden;
+  bukaOTP.setAttribute('aria-expanded', String(!formOTP.hidden));
+  if (!formOTP.hidden) document.getElementById('otp-nomor').focus();
+});
+
+formOTP.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const phonenumber = formOTP.phonenumber.value.trim();
+  const otp = formOTP.otp.value.trim();
+  if (!phonenumber) { pesanOTP.textContent = 'Isi nomor WhatsApp yang menerima OTP.'; return; }
+  if (!/^\d{6}$/.test(otp)) { pesanOTP.textContent = 'Kode OTP harus 6 digit angka.'; return; }
+  pesanOTP.textContent = '';
+  kirimOTP.disabled = true;
+  postJSON(URL_OTP, { phonenumber, otp }, ({ status, data }) => {
+    kirimOTP.disabled = false;
+    if (status === 200 && data && data.login) {
+      setCookieWithExpireHour(wauthparam.tokencookiename, data.login, wauthparam.tokencookiehourslifetime);
+      redirect(wauthparam.redirect);
+      return;
+    }
+    pesanOTP.textContent = status === 0
+      ? 'Tidak dapat terhubung ke server. Periksa koneksi lalu coba lagi.'
+      : (data && data.detail) || 'Masuk dengan OTP gagal. Coba lagi.';
+  });
+});
 
 deleteCookie(wauthparam.tokencookiename);
 qrController(wauthparam);
